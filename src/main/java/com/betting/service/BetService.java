@@ -12,6 +12,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.betting.BetReq;
 import com.betting.entity.Bet;
 import com.betting.entity.BetReport;
 import com.betting.entity.BetSoldPerHour;
@@ -45,8 +46,8 @@ public class BetService {
 	 * Save new bet
 	 * @param bet
 	 */
-	public void createBet(Bet bet) {
-		this.betRepository.save(bet);
+	public void createBet(BetReq bet) {
+		this.betRepository.save(getBetEntity(bet));
 	}
 
 	/**
@@ -213,5 +214,10 @@ public class BetService {
 			}
 		}
 		return betDate;
+	}
+	
+	private Bet getBetEntity(BetReq request) {
+		return new Bet(request.getDateTime(), request.getBetType(), request.getPropNumber(), request.getCustomerId(),
+				request.getInvestment());
 	}
 }
