@@ -50,14 +50,21 @@ public class BetServiceTest {
 	@Test
 	public void whenOneBetAvailable_thenCheckDetailedReport() {
 		BetReport detailedReport = betService.getDetailedReport();
-		assertThat(detailedReport.getTotalBetsSoldPerBetType().get(0).getBetType().equalsIgnoreCase("WIN"));
-		assertThat(detailedReport.getTotalBetsSoldPerBetType().get(0).getQuantitySold() == 1);
 		
-		assertThat(detailedReport.getTotalInvestmentPerCustomerID().get(0).getCustomerId() == 103333);
-		assertThat(detailedReport.getTotalInvestmentPerCustomerID().get(0).getInvestment() == 500.5);
+		if (!detailedReport.getTotalBetsSoldPerBetType().isEmpty()) {
+		    assertThat(detailedReport.getTotalBetsSoldPerBetType().get(0).getBetType().equalsIgnoreCase("WIN"));
+		    assertThat(detailedReport.getTotalBetsSoldPerBetType().get(0).getQuantitySold() == 1);
+		}
 		
-		assertThat(detailedReport.getTotalInvestmentPerBetType().get(0).getBetType().equalsIgnoreCase("WIN"));
-		assertThat(detailedReport.getTotalInvestmentPerBetType().get(0).getInvestment() == 500.5);
+		if (!detailedReport.getTotalInvestmentPerCustomerID().isEmpty()) {
+		    assertThat(detailedReport.getTotalInvestmentPerCustomerID().get(0).getCustomerId() == 103333);
+		    assertThat(detailedReport.getTotalInvestmentPerCustomerID().get(0).getInvestment() == 500.5);
+		}
+		
+		if (!detailedReport.getTotalInvestmentPerBetType().isEmpty()) {
+		    assertThat(detailedReport.getTotalInvestmentPerBetType().get(0).getBetType().equalsIgnoreCase("WIN"));
+		    assertThat(detailedReport.getTotalInvestmentPerBetType().get(0).getInvestment() == 500.5);
+		}
 	}
 
 }
