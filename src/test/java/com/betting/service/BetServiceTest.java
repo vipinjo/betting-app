@@ -15,7 +15,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.betting.BetTypes;
 import com.betting.entity.Bet;
 import com.betting.entity.BetReport;
 import com.betting.repository.BetRepository;
@@ -48,22 +47,17 @@ public class BetServiceTest {
 		assertNotNull(bets);
 	}
 	
-//	@Test
-//	public void whenOneBetAvailable_thenCheckTotalInvestmentPerCustomerID() {
-//		BetReport detailedReport = betService.getDetailedReport();
-//		assertThat(detailedReport.getTotalInvestmentPerCustomerID() == 500.5);
-//	}
-	
-//	@Test
-//	public void whenOneBetAvailable_thenCheckTotalInvestmentPerBetType() {
-//		BetReport detailedReport = betService.getDetailedReport();
-//		assertThat(detailedReport.getTotalInvestmentPerBetType() == 500.5 / BetTypes.values().length);
-//	}
-//	
-//	@Test
-//	public void whenOneBetAvailable_thenCheckTotalInvestmentPerBetType() {
-//		BetReport detailedReport = betService.getDetailedReport();
-//		assertThat(detailedReport.getTotalInvestmentPerBetType() == 500.5 / BetTypes.values().length);
-//	}
+	@Test
+	public void whenOneBetAvailable_thenCheckDetailedReport() {
+		BetReport detailedReport = betService.getDetailedReport();
+		assertThat(detailedReport.getTotalBetsSoldPerBetType().get(0).getBetType().equalsIgnoreCase("WIN"));
+		assertThat(detailedReport.getTotalBetsSoldPerBetType().get(0).getQuantitySold() == 1);
+		
+		assertThat(detailedReport.getTotalInvestmentPerCustomerID().get(0).getCustomerId() == 103333);
+		assertThat(detailedReport.getTotalInvestmentPerCustomerID().get(0).getInvestment() == 500.5);
+		
+		assertThat(detailedReport.getTotalInvestmentPerBetType().get(0).getBetType().equalsIgnoreCase("WIN"));
+		assertThat(detailedReport.getTotalInvestmentPerBetType().get(0).getInvestment() == 500.5);
+	}
 
 }
