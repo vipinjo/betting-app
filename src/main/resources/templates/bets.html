@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang=en xmlns:th="http://www.thymleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Betting App</title>
+<link th:href="@{css/site.css}" rel="stylesheet"/>
+</head>
+<body>
+	<table>
+		<tr>
+			<th>Date Time</th>
+			<th>Bet Type</th>
+			<th>Prop Number</th>
+			<th>Customer ID</th>
+			<th>Investment</th>
+		</tr>
+		<tr th:each="bet:${bets}">
+			<td th:text="${bet.dateTime}"></td>
+			<td th:text="${bet.betType}"></td>
+			<td th:text="${bet.propNumber}"></td>
+			<td th:text="${bet.customerId}"></td>
+			<td th:text="${bet.investment}"></td>
+		</tr>
+	</table>
+
+</body>
+</html>
