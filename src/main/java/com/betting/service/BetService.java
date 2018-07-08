@@ -3,16 +3,19 @@ package com.betting.service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.betting.BetReq;
+import com.betting.BetTypes;
 import com.betting.entity.Bet;
 import com.betting.entity.BetReport;
 import com.betting.entity.BetSoldPerHour;
@@ -46,8 +49,15 @@ public class BetService {
 	 * Save new bet
 	 * @param bet
 	 */
-	public void createBet(BetReq bet) {
-		this.betRepository.save(getBetEntity(bet));
+	public void createBet(List<BetReq> bets) {
+		if (bets != null && !bets.isEmpty()) {
+			for (BetReq betReq : bets) {
+				Bet betEntity = getBetEntity(betReq);
+				if (betEntity != null) {
+				    this.betRepository.save(getBetEntity(betReq));
+				}
+			}
+		}
 	}
 
 	/**
@@ -217,7 +227,30 @@ public class BetService {
 	}
 	
 	private Bet getBetEntity(BetReq request) {
-		return new Bet(request.getDateTime(), request.getBetType(), request.getPropNumber(), request.getCustomerId(),
-				request.getInvestment());
+		Bet bet = null;
+		if (request != null && request.getDateTime() != null && !request.getDateTime().isEmpty()
+				&& isValidBetType(request) && request.getCustomerId() != null && request.getInvestment() != null
+				&& request.getPropNumber() != null) {
+			bet = new Bet(request.getDateTime(), request.getBetType(), request.getPropNumber(), request.getCustomerId(),
+					request.getInvestment());
+		}
+
+		return bet;
 	}
+	
+	private boolean isValidBetType(BetReq request) {
+		boolean isValidBetType = false;
+		if (request != null && request.getBetType() != null && !request.getBetType().isEmpty()) {
+			List<String> list = Arrays.asList(getBetTypes());
+			isValidBetType = list.contains(request.getBetType());
+		}
+
+		return isValidBetType;
+	}
+
+	public static String[] getBetTypes() {
+		return Stream.of(BetTypes.values()).map(BetTypes::name).toArray(String[]::new);
+	}
+	
+	
 }

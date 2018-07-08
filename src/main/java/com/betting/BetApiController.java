@@ -1,5 +1,7 @@
 package com.betting;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +25,8 @@ public class BetApiController {
 	}
 	
 	@PostMapping
-	public void createBet(@Valid @RequestBody BetReq bet) {
-		this.betService.createBet(bet);
+	public void createBet(@Valid @RequestBody List<BetReq> bets) {
+		this.betService.createBet(bets);
 	}
  
 }
